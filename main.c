@@ -1,69 +1,58 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-int max(int a,int b)
+#define size 100
+int count;
+void merge(int A[size],int l,int m,int r)
 {
 
-    if(a>b)
-        return a;
-    else
-        return b;
+    int i,j,k,B[size];
+    i=l;
+    j=m+1;
+    k=l;
+    while(i<=m && j<=r)
+    {
+        count++;
+        if(A[i]<A[j])
+            B[k++]=A[i++];
+        else
+            B[k++]=A[j++];
+
+    }
+    while(i<=m)
+        B[k++]=A[i++];
+    while(j<=r)
+        B[k++]=A[j++];
+    for(i=l;i<=r;i++)
+        A[i]=B[i];
+}
+void mergesort(int A[size],int l,int r)
+{
+
+
+    int m;
+    if(l<r)
+    {
+
+        m=(l+r)/2;
+        mergesort(A,l,m);
+        mergesort(A,m+1,r);
+        merge(A,l,m,r);
+
+    }
 }
 
 int main()
-{
-    int n,w[10],v[10],V[10][10],W,i,j ,x[10]={0};
-    printf("\n read no objects:\n");
+{   int i,n,A[size];
+    printf("enter the size:\n");
     scanf("%d",&n);
-    printf("\n Read weights of the objects:\n");
-    for(i=1;i<=n;i++)
-        scanf("%d",&w[i]);
-    printf("\n Read profits of the objects:\n");
-    for(i=1;i<=n;i++)
-        scanf("%d",&v[i]);
-    printf("\n Read knapsack capacity:\n");
-    scanf("%d",&W);
-    for(i=0;i<=n;i++)
-    {
-
-        for(j=0;j<=W;j++)
-        {
-            if(i==0 || j==0)
-                V[i][j]=0;
-            else if(j<w[i])
-                V[i][j]=V[i-1][j];
-            else
-                V[i][j]=max(V[i-1][j],V[i-1][j-w[i]]+v[i]);
-
-            printf("%d\t",V[i][j]);
-        }
+    printf("enter the elements:\n");
+    for(i=0;i<=n-1;i++)
+        scanf("%d",&A[i]);
+    mergesort(A,0,n-1);
+    printf("sorted array");
+    for(i=0;i<=n-1;i++)
+        printf("%d",A[i]);
+    printf("the total no comparison %d\n",count);
 
 
-      printf("\n");
-
-    }
-    printf("\n The max profit is %d",V[n][W]);
-    i=n;
-    j=W;
-    while(i!=0 && j!=0)
-    {
-
-        if(V[i][j]!=V[i-1][j])
-        {
-
-            x[i]=1;
-            j=j-w[i];
-        }
-        i=i-1;
-    }
-    printf("\n Objects included are:\n");
-    for(i=1;i<=n;i++)
-    {
-
-        if(x[i]==1)
-            printf("\n %d object is included",i);
-    }
-
-
-    return 0;
 }
