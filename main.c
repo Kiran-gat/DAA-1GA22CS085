@@ -1,58 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include<string.h>
+#define size 100
 int count;
-int bfsm(char T[20],char P[10])
+void bubblesort(int A[size],int n)
 {
 
-    int n,m,i,j;
-
-    n=strlen(T);
-    m=strlen(P);
-    for(i=0;i<=n-m;i++)
+    int i,j,temp;
+    for(i=0;i<=n-2;i++)
     {
 
-        j=0;
-        while(j<m && P[j]==T[i+j])
+        for(j=0;j<=n-2-i;j++)
         {
-             j=j+1;
-             count++;
 
+            count++;
+            if(A[j]>A[j+1])
+            {
+
+                temp=A[j];
+                A[j]=A[j+1];
+                A[j+1]=temp;
+            }
         }
-        count++;
-
-        if(j==m)
-            return i;
-
     }
-    return -1;
 }
-int main(){
-    int flag;
-char T[20],P[10];
-printf("\nRead text\n:");
-scanf("%s",T);
-printf("\nRead pattern\n:");
-scanf("%s",P);
-flag=bfsm(T,P);
-if(flag==-1)
-{
- printf("\n pattern not found");
-    printf("number of comparisons=%d",count);
-
-
-    }
-else
+int main()
 {
 
-printf("\n pattern found at %d location\n",flag+1);
-    printf("number of comparisons=%d",count-1);
+    int i,A[size],n;
+    printf("\nread an array:");
+    scanf("%d",&n);
+    printf("\nread array elements\n");
+    for(i=0;i<=n-1;i++)
+        scanf("%d",&A[i]);
+    bubblesort(A,n);
+    printf("\nsorted elements are:");
+    for(i=0;i<=n-1;i++)
+        printf("%d\t",A[i]);
+    printf("\n the number of  comparisons %d\n",count);
+    return 0;
 
 }
-return 0;
-
-
-
-
-}
-
