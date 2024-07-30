@@ -1,71 +1,48 @@
+
 #include <stdio.h>
 #include <stdlib.h>
-#define size 100
-int count;
-
-int partition(int A[size],int l,int r){
-
- int i,j,pivot,temp;
- pivot=A[l];
- i=l+1;
- j=r;
- while(1){
-
-    while(pivot>=A[i]&& i<=r)
-    {  count++;
-       i++;
-    }
-
-    while(pivot<A[j])
-    {    count++;
-        j--;
-
-    }
-   count++;
-    if(i<j)
-    {
-
-        temp=A[i];
-        A[i]=A[j];
-        A[j]=temp;
-
-    }
-    else{
-
-        temp=A[j];
-        A[j]=A[l];
-        A[l]=temp;
-        return j;
-    }
- }
-
-}
-void quicksort(int A[size],int l,int r){
-
-   int s;
-   if(l<r)
+int topo[10],k;
+void dfs(int a[10][10],int n,int visited[10],int source)
+{
+    int i;
+   visited[source]=1;
+   for(i=1;i<=n;i++)
    {
-       s=partition(A,l,r);
-       quicksort(A,l,s-1);
-       quicksort(A,s+1,r);
-
+       if(a[source][i]==1 && visited[i]==0)
+        dfs(a,n,visited,i);
    }
-
+   topo[++k]=source;
 }
 
 int main()
 {
-    int i,n,A[size];
-    printf("enter the size:\n");
-    scanf("%d",&n);
-    printf("enter the elements:\n");
-    for(i=0;i<n;i++)
-        scanf("%d",&A[i]);
-    quicksort(A,0,n-1);
+   int n,a[10][10],i,j,visited[10];
+   printf("\n read no of nodes:");
+   scanf("%d",&n);
+   printf("\n read adjacency matrix:");
+   for(i=1;i<=n;i++)
+   {
+       for(j=1;j<=n;j++)
+        scanf("%d",&a[i][j]);
+   }
 
-    printf("sorted array\n");
-    for(i=0;i<n;i++)
-        printf("%d",A[i]);
-    printf("th comparison %d",count);
+   for(i=1;i<=n;i++)
+    visited[i]=0;
+   for(i=1;i<=n;i++)
+   {
+       if(visited[i]==0)
+       {
+           dfs(a,n,visited,i);
 
+       }
+
+   }
+   printf("\n topological ordering is");
+   for(i=k;i>=1;i--)
+   {
+
+       printf("%d\t",topo[i]);
+   }
+    return 0;
 }
+
