@@ -1,86 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-void Dijkstra(int cost[10][10], int n,int source)
+int min(int a,int b)
 {
 
-
-int i,visited[10],u,v,count=1,min,dist[10];
-for(i=1;i<=n;i++)
-{
-
-
-    visited[i]=0;
-    dist[i]=cost[source][i];
+    if(a<b)
+        return a;
+    else
+        return b;
 }
-visited[source]=1;
-dist[source]=0;
 
-while(count<=n)
+void flodys(int a[10][10],int n)
 {
-
-    min=999;
-    for(i=1;i<=n;i++)
-    {
-
-
-
-            if(visited[i]==0&&dist[i]<min)
-            {
-
-                    min=dist[i];
-                    u=i;
-
-
-                }
-            }
-            visited[u]=1;
-            count++;
-
+    int i, j, k;
+    for(k=1;k<=n;k++)
         for(i=1;i<=n;i++)
-        {
-            if(dist[i]>dist[u]+cost[u][i])
-                dist[i]=dist[u]+cost[u][i];
-        }
+            for(j=1;j<=n;j++)
+                a[i][j]=min(a[i][j],a[i][k]+a[k][j]);
 
-    }
-
-
-
-        printf("\n shortest path from%d\n",source);
-        for(i=1;i<=n;i++)
-            printf("\n %d to %d is %d",source,i,dist[i]);
-
-    }
-
-
-
-
-
-
+}
 int main()
-{
-    int n,cost[10][10],i,j,source;
-    printf("\n Read number of nodes:");
-    scanf("%d",&n);
-    printf("\n Read source:");
-    scanf("%d",&source);
-    printf("\n Read cost matrix\n");
-    for(i=1;i<=n;i++)
-    {
 
-        for(j=1;j<=n;j++)
-        {
+{ int n,a[10][10],i,j;
+   printf("\n enter no of nodes:");
+   scanf("%d",&n);
+   printf("\n read cost matrix\n:");
+   for(i=1;i<=n;i++)
+      for(j=1;j<=n;j++)
+      scanf("%d",&a[i][j]);
+   flodys(a,n);
+   printf("\n all-pair shortest path is:\n");
+   for(i=1;i<=n;i++)
+   {
+       for(j=1;j<=n;j++)
+       {
+           printf("%d\t",a[i][j]);
+       }
+       printf("\n");
+   }
 
-            scanf("%d",&cost[i][j]);
-            if(cost[i][j]==0)
-                cost[i][j]=999;
 
-
-
-        }
-
-    }
-     Dijkstra(cost,n,source);
     return 0;
 }
