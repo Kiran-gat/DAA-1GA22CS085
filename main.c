@@ -1,42 +1,68 @@
 #include <stdio.h>
 #include <stdlib.h>
-int min(int a,int b)
+
+int max(int a,int b)
 {
 
-    if(a<b)
+    if(a>b)
         return a;
     else
         return b;
 }
 
-void flodys(int a[10][10],int n)
-{
-    int i, j, k;
-    for(k=1;k<=n;k++)
-        for(i=1;i<=n;i++)
-            for(j=1;j<=n;j++)
-                a[i][j]=min(a[i][j],a[i][k]+a[k][j]);
-
-}
 int main()
+{
+    int n,w[10],v[10],V[10][10],W,i,j ,x[10]={0};
+    printf("\n read no objects:\n");
+    scanf("%d",&n);
+    printf("\n Read weights of the objects:\n");
+    for(i=1;i<=n;i++)
+        scanf("%d",&w[i]);
+    printf("\n Read profits of the objects:\n");
+    for(i=1;i<=n;i++)
+        scanf("%d",&v[i]);
+    printf("\n Read knapsack capacity:\n");
+    scanf("%d",&W);
+    for(i=0;i<=n;i++)
+    {
 
-{ int n,a[10][10],i,j;
-   printf("\n enter no of nodes:");
-   scanf("%d",&n);
-   printf("\n read cost matrix\n:");
-   for(i=1;i<=n;i++)
-      for(j=1;j<=n;j++)
-      scanf("%d",&a[i][j]);
-   flodys(a,n);
-   printf("\n all-pair shortest path is:\n");
-   for(i=1;i<=n;i++)
-   {
-       for(j=1;j<=n;j++)
-       {
-           printf("%d\t",a[i][j]);
-       }
-       printf("\n");
-   }
+        for(j=0;j<=W;j++)
+        {
+            if(i==0 || j==0)
+                V[i][j]=0;
+            else if(j<w[i])
+                V[i][j]=V[i-1][j];
+            else
+                V[i][j]=max(V[i-1][j],V[i-1][j-w[i]]+v[i]);
+
+            printf("%d\t",V[i][j]);
+        }
+
+
+      printf("\n");
+
+    }
+    printf("\n The max profit is %d",V[n][W]);
+    i=n;
+    j=W;
+    while(i!=0 && j!=0)
+    {
+
+        if(V[i][j]!=V[i-1][j])
+        {
+
+            x[i]=1;
+            j=j-w[i];
+        }
+        i=i-1;
+    }
+    printf("\n Objects included are:\n");
+    for(i=1;i<=n;i++)
+    {
+
+        if(x[i]==1)
+            printf("\n %d object is included",i);
+    }
 
 
     return 0;
